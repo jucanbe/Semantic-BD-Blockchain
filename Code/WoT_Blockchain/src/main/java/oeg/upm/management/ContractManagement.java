@@ -27,30 +27,29 @@ import oeg.upm.contract.Sensor_IoT;
 public class ContractManagement {
 	
 	private Web3j web3j = Web3j.build(new HttpService("HTTP://127.0.0.1:7545"));
+	private final String context = "https://juancanobenito.github.io/Semantic-BD-Blockchain/context/saref.json";
 	
-	public void introduceGeneralValues(String account, String priv_Key) {
+	public void introduceGeneralValues(String priv_Key, String building, String location, String office, long timestamp, int lux, int co2, int humidity, int temp) {
 		try {
 			String contractAddress = "0x954c986b38f35FD7D7cBeA21134159ff1465596f"; //The deployed contract address, taken from truffle console or ganache logs
 			Credentials credentials = Credentials.create(priv_Key);
 			BigInteger gasPrice = new BigInteger("85000");
 			BigInteger gasLimit = new BigInteger("6721975");
-			System.out.println(web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).sendAsync().get().getBlock().getGasLimit());
 			Sensor_IoT sensorContract = Sensor_IoT.load(contractAddress, web3j, credentials, gasPrice, gasLimit);
-			sensorContract.storeDeviceStatus(account, contractAddress, contractAddress, account, priv_Key, contractAddress, gasLimit, gasLimit, gasLimit, gasPrice, gasLimit);
+			sensorContract.storeDeviceStatus(credentials.getAddress(), context, credentials.getAddress(), building, location, office, BigInteger.valueOf(timestamp), BigInteger.valueOf(lux), BigInteger.valueOf(co2), BigInteger.valueOf(humidity), BigInteger.valueOf(temp)).send();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
 	}
 	
-	public void introduceEnergyValues(String account, String priv_Key, String context, String building, String location, long timestamp, int energy) {
+	public void introduceEnergyValues(String priv_Key, String building, String location, long timestamp, int energy) {
 		try {
 			String contractAddress = "0x40c3bcF4cd5b555AF05a71B21CB4809345B8d48e"; //The deployed contract address, taken from truffle console or ganache logs
 			Credentials credentials = Credentials.create(priv_Key);
 			BigInteger gasPrice = new BigInteger("85000");
 			BigInteger gasLimit = new BigInteger("6721975");
-			System.out.println(web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).sendAsync().get().getBlock().getGasLimit());
 			Energy_IoT energyContract = Energy_IoT.load(contractAddress, web3j, credentials, gasPrice, gasLimit);
-			energyContract.storeDeviceStatus(account, context, account, building, location, BigInteger.valueOf(timestamp), BigInteger.valueOf(energy));
+			energyContract.storeDeviceStatus(credentials.getAddress(), context, credentials.getAddress(), building, location, BigInteger.valueOf(timestamp), BigInteger.valueOf(energy)).send();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

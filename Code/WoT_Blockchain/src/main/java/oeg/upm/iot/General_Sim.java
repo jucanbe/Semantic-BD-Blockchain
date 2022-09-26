@@ -20,7 +20,7 @@ public class General_Sim {
 			device = new FileReader(fileDir);
 			Iterable<CSVRecord> deviceRecords = CSVFormat.DEFAULT.parse(device);
 			Iterator<CSVRecord> deviceRecord = deviceRecords.iterator();
-//			FileManagement.removeFirstLine(fileDir);
+			FileManagement.removeFirstLine(fileDir);
 			return Double.valueOf(deviceRecord.next().get(1))*100;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -37,7 +37,7 @@ public class General_Sim {
 			device = new FileReader(fileDir);
 			Iterable<CSVRecord> deviceRecords = CSVFormat.DEFAULT.parse(device);
 			Iterator<CSVRecord> deviceRecord = deviceRecords.iterator();
-//			FileManagement.removeFirstLine(fileDir);
+			FileManagement.removeFirstLine(fileDir);
 			return Double.valueOf(deviceRecord.next().get(1));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

@@ -83,6 +83,7 @@ public class Coordinator_agent extends AgentBase{
 			}
 			if(missingMessages==0) {
 				missingMessages=totalDevices;	
+				System.out.println("Introducir valores");
 		    	try {
 					FileUtils.writeStringToFile(blockDates, contractManage.getCurrentBlock()+","+Long.toString(tm.timestamp())+"\n", true);
 				} catch (IOException e) {

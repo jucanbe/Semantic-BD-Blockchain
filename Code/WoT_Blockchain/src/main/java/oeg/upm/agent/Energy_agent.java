@@ -40,8 +40,6 @@ public class Energy_agent extends AgentBase{
 		System.out.println("Created ENERGY agent in building " + building);
 		this.type = AgentModel.ENERGY;
 		setKeys();
-		System.out.println(ethPublicAddr);
-		System.out.println(ethPrivAddr);
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e1) {
@@ -85,7 +83,23 @@ public class Energy_agent extends AgentBase{
 				if(message.getContent()!=null) {
 					long timestamp = Long.parseLong(message.getContent());
 					Double energy = gs.device_Retriever(building)/100;
-					energyContract.introduceEnergyValues(ethPublicAddr, ethPrivAddr, "", "building"+building,"Madrid",timestamp,energy.intValue());
+					String city;
+					switch (building) {
+					case 1:
+						city = "Madrid";
+						break;
+					case 2:
+						city = "Paris";
+						break;
+					case 3:
+						city = "Londres";
+						break;
+					default:
+						city = "unknown";
+						break;
+					}
+					energyContract.introduceEnergyValues(ethPrivAddr, "building"+building,city,timestamp,energy.intValue());
+
 				}
 
 				ACLMessage finish = new ACLMessage(ACLMessage.INFORM);
