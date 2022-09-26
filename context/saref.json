@@ -1,0 +1,13 @@
+{
+  "@context" : {
+    "saref" : "https://w3id.org/saref#",
+    "temperature" : {
+      "@id": "saref:Temperature",
+      "@type": "xsd:string"
+  	},
+    "Time" : {
+      "@id": "core:serviceDescription",
+      "@type": "xsd:string"
+  	}
+  }
+}
