@@ -33,7 +33,7 @@ import org.web3j.crypto.WalletUtils;
 public class GanacheInfoToJSON {
 	
     public static void main( String[] args ){
-    	Web3j web3 = Web3j.build(new HttpService("HTTP://127.0.0.1:7545"));
+    	Web3j web3 = Web3j.build(new HttpService(Tokens.CHAIN_IP));
 		try {
 	    	List<String> account = web3.ethAccounts().send().getAccounts();
 	    	JsonArray ja = new JsonArray();
@@ -43,8 +43,7 @@ public class GanacheInfoToJSON {
 	    	for(int i = 0; i<account.size();i++) {
 		    	JsonObject jo = new JsonObject();
 	    		String password = null; // no encryption
-	    		String mnemonic = "still trial aspect alpha plate taste gaze street purchase ketchup decorate hotel";
-	    		byte[] seed = MnemonicUtils.generateSeed(mnemonic, password);
+	    		byte[] seed = MnemonicUtils.generateSeed(Tokens.MNEMONIC, password);
 	    		Bip32ECKeyPair masterKeypair = Bip32ECKeyPair.generateKeyPair(seed);
 	    		final int[] path = {44 | Bip32ECKeyPair.HARDENED_BIT, 60 | Bip32ECKeyPair.HARDENED_BIT, 0 | Bip32ECKeyPair.HARDENED_BIT, 0, i};
 	    		Bip32ECKeyPair childKeypair = Bip32ECKeyPair.deriveKeyPair(masterKeypair, path);

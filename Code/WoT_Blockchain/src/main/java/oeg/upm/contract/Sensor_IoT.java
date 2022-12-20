@@ -56,7 +56,11 @@ public class Sensor_IoT extends Contract {
 
     static {
         _addresses = new HashMap<String, String>();
-        _addresses.put("5777", "0x954c986b38f35FD7D7cBeA21134159ff1465596f");
+        _addresses.put("1664276872415", "0x59E50EdDf7b0b97d5E022E9EE77f5d8668C07A8C");
+        _addresses.put("1665177351151", "0x5b1869D9A4C187F2EAa108f3062412ecf0526b24");
+        _addresses.put("1664445693780", "0xE22C831EF92805C4A6e8B82ba28508F1d21f3AdA");
+        _addresses.put("1664277153222", "0x5020A1bB2Ff555e20cdA03fDA1f54Ba1bE6FbC5E");
+        _addresses.put("1664821598266", "0x5b1869D9A4C187F2EAa108f3062412ecf0526b24");
     }
 
     @Deprecated

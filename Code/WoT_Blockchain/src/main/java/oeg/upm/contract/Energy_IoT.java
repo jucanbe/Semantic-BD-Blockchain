@@ -55,7 +55,14 @@ public class Energy_IoT extends Contract {
 
     static {
         _addresses = new HashMap<String, String>();
+        _addresses.put("1664273385408", "0x12b988a72276b7aB0dD22BF26Fe2eFb9F92a579f");
+        _addresses.put("1664276872415", "0x7Ac24C11e2a81Ba1a6E62EA5EfFe5439639e083C");
+        _addresses.put("1665177351151", "0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab");
+        _addresses.put("1664445693780", "0xbc31364F6ee301F546D72dC1E7936E2332F0AA93");
+        _addresses.put("1664275835583", "0x68714d4880B53420882Eb20B7cD7Ef23d5bd51F0");
+        _addresses.put("1664277153222", "0xe12C9ea0ecA77a1A7D363f684889406e58B4c01C");
         _addresses.put("5777", "0x40c3bcF4cd5b555AF05a71B21CB4809345B8d48e");
+        _addresses.put("1664821598266", "0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab");
     }
 
     @Deprecated

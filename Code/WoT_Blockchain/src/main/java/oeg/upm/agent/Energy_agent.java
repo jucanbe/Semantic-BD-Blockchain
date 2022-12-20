@@ -82,7 +82,7 @@ public class Energy_agent extends AgentBase{
 
 				if(message.getContent()!=null) {
 					long timestamp = Long.parseLong(message.getContent());
-					Double energy = gs.device_Retriever(building)/100;
+					Double energy = gs.device_Retriever(building);
 					String city;
 					switch (building) {
 					case 1:

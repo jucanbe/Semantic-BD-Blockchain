@@ -30,6 +30,7 @@ public class Coordinator_agent extends AgentBase{
 	private int missingMessages;
 	private File blockDates = new File("./json_dates/blockDates.json");
 	private ContractManagement contractManage = new ContractManagement();
+	private int iterations = 0;
 	
 	protected void setup(){
 		super.setup();
@@ -108,6 +109,11 @@ public class Coordinator_agent extends AgentBase{
 					send(finish);
 				}
 				tm.addTime();
+				iterations++;
+				System.out.println("Iteración num: " + iterations);
+			}
+			if(iterations == 50000) {
+				System.exit(0);
 			}
 		}
 

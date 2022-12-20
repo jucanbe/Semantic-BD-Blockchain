@@ -25,7 +25,7 @@ public class ExtractContractValues {
 
 	public static void main( String[] args ){
 
-		Web3j web3j = Web3j.build(new HttpService("HTTP://127.0.0.1:7545"));
+		Web3j web3j = Web3j.build(new HttpService(Tokens.CHAIN_IP));
 
 		// Event definition
 		//		Event MY_EVENT = new Event("MyEvent", Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Bytes32>(true) {}, new TypeReference<Uint8>(false) {}));
@@ -39,8 +39,8 @@ public class ExtractContractValues {
 		// Event definition hash
 		String MY_EVENT_HASH = EventEncoder.encode(MY_EVENT);
 
-		// Filter
-		EthFilter filter = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, "0x64F53D742ef261eD7A01AF0F802998B2e530e0f4");
+		// Filter "0x64F53D742ef261eD7A01AF0F802998B2e530e0f4"
+		EthFilter filter = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, "0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab");
 
 		// Pull all the events for this contract
 		web3j.ethLogFlowable(filter).subscribe(log -> {
