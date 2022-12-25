@@ -1,0 +1,23 @@
+{
+  "@context":  {
+    	"saref" : "https://w3id.org/saref#",
+      	"s4ldg":"http://saref.etsi.org/saref4bldg",
+      	"saref4city":"https://saerf.etsi.org/saerf4city/",
+    	"location" : {
+      	"@id": "saref4city:City",
+      	"@type": "xsd:string"
+  		},
+    	"timestamp" : {
+      	"@id": "saref:hasTimestamp",
+      	"@type": "xsd:dateTime"
+		},
+    	"buildingName" : {
+      	"@id": "s4ldg:BuildingSpace",
+      	"@type": "xsd:string"
+		},
+    	"energy" : {
+      	"@id": "saref:Energy",
+      	"@type": "xsd:double"
+		}
+	}
+}
