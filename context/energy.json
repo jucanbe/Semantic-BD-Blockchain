@@ -1,7 +1,7 @@
 {
   "@context":  {
-    	"saref" : "https://w3id.org/saref#",
-      	"s4ldg":"http://saref.etsi.org/saref4bldg",
+    	"saref" : "https://saref.etsi.org/core/",
+      	"s4ldg":"http://saref.etsi.org/saref4bldg/",
       	"saref4city":"https://saerf.etsi.org/saerf4city/",
     	"location" : {
       	"@id": "saref4city:City",
