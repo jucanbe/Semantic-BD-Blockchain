@@ -17,16 +17,16 @@
         "@type": "xsd:string"
     },"lux" : {
         "@id": "saref:Light",
-        "@type": "xsd:string"
+        "@type": "xsd:double"
     },"humidity" : {
         "@id": "saref:Humidity",
-        "@type": "xsd:string"
+        "@type": "xsd:double"
     },"temp" : {
         "@id": "saref:Temperature",
-        "@type": "xsd:string"
+        "@type": "xsd:double"
     },"co2" : {
         "@id": "saref:co2",
-        "@type": "xsd:string"
+        "@type": "xsd:double"
     }
   }
 }
