@@ -1,14 +1,27 @@
-package oeg.upm.mysql;
+package oeg.upm.influxdb;
 
 import java.math.BigInteger;
-import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 
-public class IntroduceInMySQL {
+import helio.blueprints.TranslationUnit;
+import helio.blueprints.UnitBuilder;
+import helio.blueprints.components.ComponentType;
+import helio.blueprints.components.Components;
+import helio.blueprints.exceptions.ExtensionNotFoundException;
+import helio.builder.siot.rx.SIoTRxBuilder;
 
-	private static Extract_Energy_Devices_MySQL energy = new Extract_Energy_Devices_MySQL();
-	private static Extract_Temp_Device_MySQL temp = new Extract_Temp_Device_MySQL();
+public class IntroduceInfluxDB {
+
+	private static Extract_Energy_Devices_Influx energy = new Extract_Energy_Devices_Influx();
+	private static Extract_Temp_Device_Influx temp = new Extract_Temp_Device_Influx();
 
 	public static void configure(int initial, String end, Boolean isEnergy) {
 		DefaultBlockParameter initialBlock;
@@ -31,19 +44,22 @@ public class IntroduceInMySQL {
 			endBlock = DefaultBlockParameter.valueOf(BigInteger.valueOf(Integer.parseInt(end)));
 		}
 		if(!isEnergy) {
-			temp.recoverTempDevice(initialBlock, endBlock);
+			temp.recoverTempDeviceInflux(initialBlock, endBlock);
 		}else {
-			energy.recoverEnergyDevice(initialBlock, endBlock);
+			energy.recoverEnergyDeviceInflux(initialBlock, endBlock);
 		}
 	}
 
-	public static void main( String[] args ) throws MalformedURLException{
-		IntroduceInMySQL iiDB = new IntroduceInMySQL();
+	public static void main(String[] args) throws InterruptedException {
+		IntroduceInfluxDB inf = new IntroduceInfluxDB();
 		long startTime = System.nanoTime();
-		iiDB.configure(0, "*", true);
+		inf.configure(0, "*", true);
 		long stopTime = System.nanoTime();
 		System.out.println(stopTime - startTime);
 		System.exit(0);
 	}
+
+
+
 
 }

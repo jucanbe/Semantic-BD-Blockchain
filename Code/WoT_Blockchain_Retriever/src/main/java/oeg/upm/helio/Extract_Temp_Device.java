@@ -1,41 +1,35 @@
-package oeg.upm.couchdb;
+package oeg.upm.helio;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.ektorp.CouchDbConnector;
-import org.ektorp.CouchDbInstance;
-import org.ektorp.http.HttpClient;
-import org.ektorp.http.StdHttpClient;
-import org.ektorp.impl.StdCouchDbConnector;
-import org.ektorp.impl.StdCouchDbInstance;
 import org.web3j.abi.EventEncoder;
+import org.web3j.abi.EventValues;
 import org.web3j.abi.FunctionReturnDecoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Event;
 import org.web3j.abi.datatypes.Utf8String;
 import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Bytes32;
 import org.web3j.abi.datatypes.generated.Int256;
 import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.abi.datatypes.generated.Uint8;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.Contract;
 
-import com.google.gson.JsonElement;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import oeg.upm.WoT_Blockchain_Retriever.Tokens;
 
-public class Extract_Temp_Device_Couch {
-	
-	private IntroduceInDB iiDB = new IntroduceInDB();
+public class Extract_Temp_Device {
 	
 	public void recoverTempDevice(DefaultBlockParameter firstBlock, DefaultBlockParameter finalBlock) {
 		Web3j web3j = Web3j.build(new HttpService("HTTP://127.0.0.1:7545"));
@@ -56,6 +50,7 @@ public class Extract_Temp_Device_Couch {
 		// Filter
 		EthFilter filter = new EthFilter(firstBlock, finalBlock, Tokens.TEMPDIR);
 
+		JsonArray finalJson = new JsonArray();
 		// Pull all the events for this contract
 		web3j.ethLogFlowable(filter).subscribe(log -> {
 			String eventHash = log.getTopics().get(0); // Index 0 is the event definition hash
@@ -72,28 +67,11 @@ public class Extract_Temp_Device_Couch {
 				finalTempJson.addProperty("co2", eventParam.get(8).getValue().toString());
 				finalTempJson.addProperty("humidity", eventParam.get(9).getValue().toString());
 				finalTempJson.addProperty("temp", eventParam.get(10).getValue().toString());
-				store(finalTempJson.toString(), log.getBlockNumber() + log.getTransactionHash());
+				finalJson.add(finalTempJson);
 			}
 		});
-	}
-	
-	public void store(String JsonObject, String hash) throws MalformedURLException, InterruptedException {
-		JsonElement element = JsonParser.parseString(JsonObject);
-		JsonObject jsonObject = element.getAsJsonObject();
-		//			System.out.println(jsonArray.get(i).getAsString());
-		byte[] germanBytes = jsonObject.toString().getBytes();
-		JsonObject = new String(germanBytes,StandardCharsets.UTF_8);
-		InputStream jsonInputStream = new ByteArrayInputStream(jsonObject.toString().getBytes());
-		StdHttpClient.Builder builder = new StdHttpClient.Builder();
-		builder.username("admin");
-		builder.password("andalucia");
-		HttpClient httpClient = builder.url("http://localhost:5984").build();  
-		CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);  
-		CouchDbConnector db = new StdCouchDbConnector("devices", dbInstance);
-		db.update(hash,
-				jsonInputStream,
-				jsonObject.toString().length(),
-				null);
+//		System.out.println(finalJson.toString());
+//		return finalJson.toString();
 	}
 
 }

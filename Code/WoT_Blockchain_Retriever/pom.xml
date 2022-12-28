@@ -45,11 +45,24 @@
     <version>6.7.0</version>
 </dependency>
 
+
 <dependency>  
 <groupId>org.ektorp</groupId>  
 <artifactId>org.ektorp</artifactId>  
 <version>1.5.0</version>  
 </dependency>  
+<dependency>
+  <groupId>org.lightcouch</groupId>
+  <artifactId>lightcouch</artifactId>
+  <version>0.2.0</version>
+</dependency>
+
+<dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.3</version>
+</dependency>
+
 <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
 <dependency>
     <groupId>com.fasterxml.jackson.core</groupId>
@@ -68,7 +81,58 @@
     <artifactId>jackson-core</artifactId>
     <version>2.14.1</version>
 </dependency>
+<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.31</version>
+</dependency>
 
+<dependency>
+  <groupId>io.github.helio-ecosystem</groupId>
+  <artifactId>helio-builder-siot</artifactId>
+  <version>0.1.10</version>
+</dependency>
+
+		<!-- Titanium -->
+		<dependency>
+		    <groupId>com.apicatalog</groupId>
+		    <artifactId>titanium-json-ld</artifactId>
+		    <version>1.2.0</version>
+		</dependency>
+				<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-shacl -->
+		<dependency>
+		    <groupId>org.apache.jena</groupId>
+		    <artifactId>jena-shacl</artifactId>
+		    <version>4.3.2</version>
+		</dependency>
+		
+				<!-- Java 11 -->
+<dependency>
+    <groupId>com.apicatalog</groupId>
+    <artifactId>titanium-json-ld</artifactId>
+    <version>1.3.1</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-rdfconnection -->
+<dependency>
+    <groupId>org.apache.jena</groupId>
+    <artifactId>jena-rdfconnection</artifactId>
+    <version>4.5.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
+<dependency>
+    <groupId>org.apache.jena</groupId>
+    <artifactId>apache-jena-libs</artifactId>
+    <version>4.5.0</version>
+    <type>pom</type>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-shaded-guava -->
+<dependency>
+    <groupId>org.apache.jena</groupId>
+    <artifactId>jena-shaded-guava</artifactId>
+    <version>4.5.0</version>
+</dependency>
   </dependencies>
 
   <build>

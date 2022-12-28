@@ -25,7 +25,6 @@ import org.web3j.protocol.http.HttpService;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import oeg.upm.extractor.Sensor_IoT.MyEventEventResponse;
 
 public class Deprecated_Extract_Energy_Devices {
 

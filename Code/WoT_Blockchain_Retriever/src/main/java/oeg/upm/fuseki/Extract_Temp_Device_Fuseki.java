@@ -1,7 +1,8 @@
-package oeg.upm.couchdb;
+package oeg.upm.fuseki;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -33,9 +34,9 @@ import com.google.gson.JsonParser;
 
 import oeg.upm.WoT_Blockchain_Retriever.Tokens;
 
-public class Extract_Temp_Device_Couch {
+public class Extract_Temp_Device_Fuseki {
 	
-	private IntroduceInDB iiDB = new IntroduceInDB();
+	private SemanticService semanticService = new SemanticService();
 	
 	public void recoverTempDevice(DefaultBlockParameter firstBlock, DefaultBlockParameter finalBlock) {
 		Web3j web3j = Web3j.build(new HttpService("HTTP://127.0.0.1:7545"));
@@ -62,38 +63,24 @@ public class Extract_Temp_Device_Couch {
 			if(eventHash.equals(MY_EVENT_HASH)) { // Only MyEvent. You can also use filter.addSingleTopic(MY_EVENT_HASH) 
 				JsonObject finalTempJson = new JsonObject();
 				List<Type> eventParam = FunctionReturnDecoder.decode(log.getData(), MY_EVENT.getParameters());
-				finalTempJson.addProperty("@context", eventParam.get(1).getValue().toString());
-				finalTempJson.addProperty("identifier", eventParam.get(2).getValue().toString());
+				finalTempJson.addProperty("@context", "https://juancanobenito.github.io/Semantic-BD-Blockchain/context/devices.json");
+				finalTempJson.addProperty("@id", "urn:" + eventParam.get(2).getValue().toString());
 				finalTempJson.addProperty("buildingName", eventParam.get(3).getValue().toString());
 				finalTempJson.addProperty("location", eventParam.get(4).getValue().toString());
 				finalTempJson.addProperty("office", eventParam.get(5).getValue().toString());
 				finalTempJson.addProperty("timestamp", eventParam.get(6).getValue().toString());
-				finalTempJson.addProperty("lux", eventParam.get(7).getValue().toString());
-				finalTempJson.addProperty("co2", eventParam.get(8).getValue().toString());
-				finalTempJson.addProperty("humidity", eventParam.get(9).getValue().toString());
-				finalTempJson.addProperty("temp", eventParam.get(10).getValue().toString());
-				store(finalTempJson.toString(), log.getBlockNumber() + log.getTransactionHash());
+				finalTempJson.addProperty("lux", Double.parseDouble(eventParam.get(7).getValue().toString())/10000);
+				finalTempJson.addProperty("co2", Double.parseDouble(eventParam.get(8).getValue().toString())/10000);
+				finalTempJson.addProperty("humidity", Double.parseDouble(eventParam.get(9).getValue().toString())/10000);
+				finalTempJson.addProperty("temp", Double.parseDouble(eventParam.get(10).getValue().toString())/10000);
+
+				StringWriter stringWriter = new StringWriter();
+				semanticService.toModel(finalTempJson, "temp").write(stringWriter,"NT");
+				semanticService.introduceInTS(eventParam.get(2).getValue().toString(), stringWriter.toString(),"devices");
 			}
 		});
 	}
 	
-	public void store(String JsonObject, String hash) throws MalformedURLException, InterruptedException {
-		JsonElement element = JsonParser.parseString(JsonObject);
-		JsonObject jsonObject = element.getAsJsonObject();
-		//			System.out.println(jsonArray.get(i).getAsString());
-		byte[] germanBytes = jsonObject.toString().getBytes();
-		JsonObject = new String(germanBytes,StandardCharsets.UTF_8);
-		InputStream jsonInputStream = new ByteArrayInputStream(jsonObject.toString().getBytes());
-		StdHttpClient.Builder builder = new StdHttpClient.Builder();
-		builder.username("admin");
-		builder.password("andalucia");
-		HttpClient httpClient = builder.url("http://localhost:5984").build();  
-		CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);  
-		CouchDbConnector db = new StdCouchDbConnector("devices", dbInstance);
-		db.update(hash,
-				jsonInputStream,
-				jsonObject.toString().length(),
-				null);
-	}
+	
 
 }

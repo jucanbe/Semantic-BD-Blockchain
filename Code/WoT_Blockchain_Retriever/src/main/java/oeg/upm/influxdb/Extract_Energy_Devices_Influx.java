@@ -1,12 +1,6 @@
-package oeg.upm.mysql;
+package oeg.upm.influxdb;
 
-import java.net.MalformedURLException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,11 +17,25 @@ import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.http.HttpService;
 
+import com.influxdb.client.InfluxDBClient;
+import com.influxdb.client.InfluxDBClientFactory;
+import com.influxdb.client.QueryApi;
+import com.influxdb.client.WriteApiBlocking;
+import com.influxdb.client.domain.WritePrecision;
+
+import com.influxdb.client.write.Point;
+import com.influxdb.query.FluxRecord;
+import com.influxdb.query.FluxTable;
+
 import oeg.upm.WoT_Blockchain_Retriever.Tokens;
 
-public class Extract_Energy_Devices_MySQL {
+public class Extract_Energy_Devices_Influx {
 
-	public void recoverEnergyDevice(DefaultBlockParameter firstBlock, DefaultBlockParameter finalBlock) {
+	private static char[] token = "s5C4oyMgud6R8LkYJEAS1RBoeeXA9F05A4PIgrG86m6bhxrZFso9zrf-ARZ2u3wIEW46FFNK8pzVkb3Nb7HR7A==".toCharArray();
+	private static String org = "8f859ed7094ddbe4";
+	private static String bucket = "energy";
+	
+	public void recoverEnergyDeviceInflux(DefaultBlockParameter firstBlock, DefaultBlockParameter finalBlock) {
 		Web3j web3j = Web3j.build(new HttpService("HTTP://127.0.0.1:7545"));
 		Event MY_EVENT = new Event("MyEvent", Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {},
 				new TypeReference<Utf8String>(true) {},
@@ -46,35 +54,31 @@ public class Extract_Energy_Devices_MySQL {
 			String eventHash = log.getTopics().get(0); // Index 0 is the event definition hash
 			if(eventHash.equals(MY_EVENT_HASH)) { // Only MyEvent. You can also use filter.addSingleTopic(MY_EVENT_HASH) 
 				List<Type> eventParam = FunctionReturnDecoder.decode(log.getData(), MY_EVENT.getParameters());
-				String context = eventParam.get(1).getValue().toString();
-				String id = eventParam.get(2).getValue().toString();
-				String build = eventParam.get(3).getValue().toString();
+//				finalTempJson.addProperty("@context", eventParam.get(1).getValue().toString());
+//				finalTempJson.addProperty("identifier", eventParam.get(2).getValue().toString());
+				String buildingName = eventParam.get(3).getValue().toString();
 				String location = eventParam.get(4).getValue().toString();
 				String timestamp = eventParam.get(5).getValue().toString();
 				String energy = eventParam.get(6).getValue().toString();
-				storeEnergy(context, id, build, location, timestamp, energy);
+				store(location, buildingName, energy, timestamp);
 			}
 		});
-//		System.out.println(finalJson.toString());
+	}
+	
+	public void store(String location, String buildingName, String energy, String timestamp) {
+		InfluxDBClient influxDBClient = InfluxDBClientFactory.create("http://localhost:8086", token, org, bucket);
+		
+		WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
+		Point point = Point.measurement("energy")
+				.addTag("location", location)
+				.addTag("buildingName", buildingName)
+				.addField("value", Double.parseDouble(energy)/10000)
+				.time(Instant.ofEpochMilli(Long.parseLong(timestamp)), WritePrecision.MS);
+		
+		writeApi.writePoint(point);
+
+		influxDBClient.close();
 	}
 
-	public void storeEnergy(String context, String identifier, String building,String location, String timestamp, String energy) throws MalformedURLException, InterruptedException {
-		Connection conn = null;
-		try {
-			Timestamp tsConverted = new Timestamp(Long.parseLong(timestamp));
-		    conn = DriverManager.getConnection("jdbc:mysql://localhost/energy?user=root&password=Lotus123_");
-		    String consulta = "INSERT INTO `energy`.`energydata` (context, identifier, building, location, timestamp, energy) VALUES "
-		    		+ "('"+context+"','"+identifier+"','"+building+"','"+location+"','"+tsConverted+"','"+Double.parseDouble(energy)/10000+"');";
-		    Statement sentencia = conn.createStatement();
-		    sentencia.executeUpdate(consulta);
-		    conn.close();
-		    
-		} catch (SQLException ex) {
-		    // handle any errors
-		    System.out.println("SQLException: " + ex.getMessage());
-		    System.out.println("SQLState: " + ex.getSQLState());
-		    System.out.println("VendorError: " + ex.getErrorCode());
-		}
-	}
 
 }

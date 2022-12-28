@@ -1,10 +1,20 @@
 package oeg.upm.couchdb;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.ektorp.CouchDbConnector;
+import org.ektorp.CouchDbInstance;
+import org.ektorp.http.HttpClient;
+import org.ektorp.http.StdHttpClient;
+import org.ektorp.impl.StdCouchDbConnector;
+import org.ektorp.impl.StdCouchDbInstance;
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.EventValues;
 import org.web3j.abi.FunctionReturnDecoder;
@@ -23,14 +33,15 @@ import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.http.HttpService;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import oeg.upm.WoT_Blockchain_Retriever.Tokens;
-import oeg.upm.extractor.Sensor_IoT.MyEventEventResponse;
 
 public class Extract_Energy_Devices_Couch {
 
-	public String recoverEnergyDevice(DefaultBlockParameter firstBlock, DefaultBlockParameter finalBlock) {
+	public void recoverEnergyDevice(DefaultBlockParameter firstBlock, DefaultBlockParameter finalBlock) {
 		Web3j web3j = Web3j.build(new HttpService("HTTP://127.0.0.1:7545"));
 		Event MY_EVENT = new Event("MyEvent", Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {},
 				new TypeReference<Utf8String>(true) {},
@@ -44,7 +55,6 @@ public class Extract_Energy_Devices_Couch {
 		// Filter
 		EthFilter filter = new EthFilter(firstBlock, finalBlock, Tokens.ENERGYDIR);
 		
-		JsonArray finalJson = new JsonArray();
 		// Pull all the events for this contract
 		web3j.ethLogFlowable(filter).subscribe(log -> {
 			String eventHash = log.getTopics().get(0); // Index 0 is the event definition hash
@@ -57,12 +67,27 @@ public class Extract_Energy_Devices_Couch {
 				finalTempJson.addProperty("location", eventParam.get(4).getValue().toString());
 				finalTempJson.addProperty("timestamp", eventParam.get(5).getValue().toString());
 				finalTempJson.addProperty("energy", eventParam.get(6).getValue().toString());
-				finalJson.add(finalTempJson);
+				store(finalTempJson.toString(), log.getBlockNumber() + log.getTransactionHash());
 			}
 		});
-//		System.out.println(finalJson.toString());
-		return finalJson.toString();
 	}
 
+	public void store(String JsonObject, String hash) throws MalformedURLException, InterruptedException {
+		JsonElement element = JsonParser.parseString(JsonObject);
+		JsonObject jsonObject = element.getAsJsonObject();
+		byte[] germanBytes = jsonObject.toString().getBytes();
+		JsonObject = new String(germanBytes,StandardCharsets.UTF_8);
+		InputStream jsonInputStream = new ByteArrayInputStream(jsonObject.toString().getBytes());
+		StdHttpClient.Builder builder = new StdHttpClient.Builder();
+		builder.username("admin");
+		builder.password("andalucia");
+		HttpClient httpClient = builder.url("http://localhost:5984").build();  
+		CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);  
+		CouchDbConnector db = new StdCouchDbConnector("energy", dbInstance);
+		db.update(hash,
+				jsonInputStream,
+				jsonObject.toString().length(),
+				null);
+	}
 
 }

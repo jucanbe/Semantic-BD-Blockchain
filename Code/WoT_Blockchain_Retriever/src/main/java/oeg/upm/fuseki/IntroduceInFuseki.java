@@ -1,4 +1,4 @@
-package oeg.upm.couchdb;
+package oeg.upm.fuseki;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,10 +24,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class IntroduceInDB {
+public class IntroduceInFuseki {
 
-	private static Extract_Energy_Devices_Couch energy = new Extract_Energy_Devices_Couch();
-	private static Extract_Temp_Device_Couch temp = new Extract_Temp_Device_Couch();
+	private static Extract_Energy_Devices_Fuseki energy = new Extract_Energy_Devices_Fuseki();
+	private static Extract_Temp_Device_Fuseki temp = new Extract_Temp_Device_Fuseki();
 
 	public static void configure(int initial, String end, Boolean isEnergy) {
 		DefaultBlockParameter initialBlock;
@@ -57,9 +57,9 @@ public class IntroduceInDB {
 	}
 
 	public static void main( String[] args ) throws MalformedURLException{
-		IntroduceInDB iiDB = new IntroduceInDB();
+		IntroduceInFuseki iiDB = new IntroduceInFuseki();
 		long startTime = System.nanoTime();
-		iiDB.configure(110001, "*", false);
+		iiDB.configure(0, "*", false);
 		long stopTime = System.nanoTime();
 		System.out.println(stopTime - startTime);
 		System.exit(0);

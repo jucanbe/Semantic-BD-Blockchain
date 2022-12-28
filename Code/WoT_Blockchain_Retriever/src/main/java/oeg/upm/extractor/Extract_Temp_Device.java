@@ -57,8 +57,8 @@ public class Extract_Temp_Device {
 			if(eventHash.equals(MY_EVENT_HASH)) { // Only MyEvent. You can also use filter.addSingleTopic(MY_EVENT_HASH) 
 				JsonObject finalTempJson = new JsonObject();
 				List<Type> eventParam = FunctionReturnDecoder.decode(log.getData(), MY_EVENT.getParameters());
-				finalTempJson.addProperty("@context", eventParam.get(1).getValue().toString());
-				finalTempJson.addProperty("identifier", eventParam.get(2).getValue().toString());
+				finalTempJson.addProperty("@context", "https://juancanobenito.github.io/Semantic-BD-Blockchain/context/devices.json");
+				finalTempJson.addProperty("@id", "urn:" + eventParam.get(2).getValue().toString());
 				finalTempJson.addProperty("buildingName", eventParam.get(3).getValue().toString());
 				finalTempJson.addProperty("location", eventParam.get(4).getValue().toString());
 				finalTempJson.addProperty("office", eventParam.get(5).getValue().toString());
@@ -74,4 +74,10 @@ public class Extract_Temp_Device {
 		return finalJson.toString();
 	}
 
+	public static void main(String[] args) {
+		Extract_Temp_Device etd = new Extract_Temp_Device();
+		DefaultBlockParameter initialBlock = DefaultBlockParameter.valueOf(BigInteger.valueOf(1000));
+		DefaultBlockParameter endBlock = DefaultBlockParameter.valueOf(BigInteger.valueOf(1002));
+		System.out.println(etd.recoverTempDevice(null, null));
+	}
 }

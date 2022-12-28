@@ -1,5 +1,11 @@
 package oeg.upm.mysql;
 
+import java.net.MalformedURLException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,20 +53,44 @@ public class Extract_Temp_Device_MySQL {
 			if(eventHash.equals(MY_EVENT_HASH)) { // Only MyEvent. You can also use filter.addSingleTopic(MY_EVENT_HASH) 
 				JsonObject finalTempJson = new JsonObject();
 				List<Type> eventParam = FunctionReturnDecoder.decode(log.getData(), MY_EVENT.getParameters());
-				finalTempJson.addProperty("@context", eventParam.get(1).getValue().toString());
-				finalTempJson.addProperty("identifier", eventParam.get(2).getValue().toString());
-				finalTempJson.addProperty("buildingName", eventParam.get(3).getValue().toString());
-				finalTempJson.addProperty("location", eventParam.get(4).getValue().toString());
-				finalTempJson.addProperty("office", eventParam.get(5).getValue().toString());
-				finalTempJson.addProperty("timestamp", eventParam.get(6).getValue().toString());
-				finalTempJson.addProperty("lux", eventParam.get(7).getValue().toString());
-				finalTempJson.addProperty("co2", eventParam.get(8).getValue().toString());
-				finalTempJson.addProperty("humidity", eventParam.get(9).getValue().toString());
-				finalTempJson.addProperty("temp", eventParam.get(10).getValue().toString());
-//				System.out.println(log.getAddress() + log.getTransactionHash());
-//				iiDB.store(finalTempJson.toString(), log.getBlockNumber() + log.getTransactionHash());
+				String context = eventParam.get(1).getValue().toString();
+				String id = eventParam.get(2).getValue().toString();
+				String build = eventParam.get(3).getValue().toString();
+				String location = eventParam.get(4).getValue().toString();
+				String office = eventParam.get(5).getValue().toString();
+				String timestamp = eventParam.get(6).getValue().toString();
+				String lux = eventParam.get(7).getValue().toString();
+				String co2 = eventParam.get(8).getValue().toString();
+				String humidity = eventParam.get(9).getValue().toString();
+				String temp = eventParam.get(10).getValue().toString();
+
+				storeDevice(context, id, build, location, office, timestamp, lux, co2, humidity, temp);
 			}
 		});
+	}
+	
+	public void storeDevice(String context, String identifier, String building,String location, String office, 
+			String timestamp, String lux, String co2, String humidity, String temp) throws MalformedURLException, InterruptedException {
+		Connection conn = null;
+		try {
+			Timestamp tsConverted = new Timestamp(Long.parseLong(timestamp));
+		    conn = DriverManager.getConnection("jdbc:mysql://localhost/energy?user=root&password=Lotus123_");
+		    String consulta = "INSERT INTO `devices`.`devicesdata` "
+		    		+ "(context, identifier, building, location, office, timestamp, lux, co2, humidity, temp) VALUES "
+		    		+ "('"+context+"','"+identifier+"','"+building+"','"+location+"','"+office+"','"+tsConverted+"','"
+		    		+ Double.parseDouble(lux)/10000+"','"+Double.parseDouble(co2)/10000+"','"+Double.parseDouble(humidity)/10000+"','"
+		    		+Double.parseDouble(temp)/10000+"');";
+//		    System.out.println(consulta);
+		    Statement sentencia = conn.createStatement();
+		    sentencia.executeUpdate(consulta);
+		    conn.close();
+		    
+		} catch (SQLException ex) {
+		    // handle any errors
+		    System.out.println("SQLException: " + ex.getMessage());
+		    System.out.println("SQLState: " + ex.getSQLState());
+		    System.out.println("VendorError: " + ex.getErrorCode());
+		}
 	}
 
 }
