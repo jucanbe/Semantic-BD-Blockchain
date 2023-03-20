@@ -27,6 +27,9 @@
     },"co2" : {
         "@id": "saref:co2",
         "@type": "xsd:double"
+    },"identifier" : {
+        "@id": "https://auroral.iot.linkeddata.es/def/core#hasId",
+        "@type": "xsd:string"
     }
   }
 }
