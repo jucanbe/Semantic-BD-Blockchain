@@ -1,35 +1,45 @@
 {
-  "@context":{
-    "saref" : "https://saref.etsi.org/core/",
-    "s4ldg":"http://saref.etsi.org/saref4bldg/",
-    "saref4city":"https://saerf.etsi.org/saerf4city/",
-    "location" : {
-        "@id": "saref4city:City",
-        "@type": "xsd:string"
-    },"timestamp" : {
-        "@id": "saref:hasTimestamp",
-        "@type": "xsd:dateTime"
-    },"buildingName" : {
-        "@id": "s4ldg:BuildingSpace",
-        "@type": "xsd:string"
-    },"office" : {
-        "@id": "saref:BuildingSpace",
-        "@type": "xsd:string"
-    },"lux" : {
-        "@id": "saref:Light",
-        "@type": "xsd:double"
-    },"humidity" : {
-        "@id": "saref:Humidity",
-        "@type": "xsd:double"
-    },"temp" : {
-        "@id": "saref:Temperature",
-        "@type": "xsd:double"
-    },"co2" : {
-        "@id": "saref:co2",
-        "@type": "xsd:double"
-    },"identifier" : {
-        "@id": "https://auroral.iot.linkeddata.es/def/core#hasId",
-        "@type": "xsd:string"
+  "@context": {
+    "isSpaceOf": {
+      "@id": "https://saref.etsi.org/saref4bldg/Building",
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "hasSpace": {
+      "@id": "https://saref.etsi.org/saref4bldg/hasSpace",
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "city":{
+      "@id":"https://saref.etsi.org/saref4city/City",
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "contains": {
+        "@id": "https://saref.etsi.org/core#Device",
+        "@type": "@id",
+        "@context": {
+        "hasId": {
+          "@id": "https://auroral.iot.linkeddata.es/def/core#hasId",
+          "@type": "http://www.w3.org/2001/XMLSchema#string"
+          }
+        }, 
+        "measurement": {
+          "@id": "https://saref.etsi.org/core/makesMeasurement",
+          "@type": "@id",
+          "@context": {
+          "timestamp": {
+            "@id": "https://saref.etsi.org/core/hasTimestamp",
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+          },
+          "value": {
+            "@id": "https://saref.etsi.org/core/hasValue",
+            "@type": "http://www.w3.org/2001/XMLSchema#string"
+          },
+          "isMeasuredIn": {
+            "@id": "https://saref.etsi.org/core/isMeasuredIn",
+            "@type": "@vocab"
+          },
+          "lux" : "http://www.ontology-of-units-of-measure.org/resource/om-2/lux"
+        }
+      }
     }
   }
 }
