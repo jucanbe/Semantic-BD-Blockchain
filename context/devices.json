@@ -8,6 +8,11 @@
          "@id":"https://saref.etsi.org/saref4bldg/hasSpace",
          "@type":"http://www.w3.org/2001/XMLSchema#string"
       },
+      ,
+      "hasId":{
+         "@id":"https://saref.etsi.org/saref4bldg/hasSpace",
+         "@type":"http://www.w3.org/2001/XMLSchema#string"
+      }
       "city":{
          "@id":"https://saref.etsi.org/saref4city/City",
          "@type":"http://www.w3.org/2001/XMLSchema#string"
@@ -30,7 +35,7 @@
                   },
                   "value":{
                      "@id":"https://saref.etsi.org/core/hasValue",
-                     "@type":"http://www.w3.org/2001/XMLSchema#string"
+                     "@type":"http://www.w3.org/2001/XMLSchema#double"
                   },
                   "isMeasuredIn":{
                      "@id":"https://saref.etsi.org/core/isMeasuredIn",
@@ -38,7 +43,8 @@
                   },
                   "lux":"http://www.ontology-of-units-of-measure.org/resource/om-2/lux",
                   "co2":"https://auroral.iot.linkeddata.es/def/adapters#co2",
-                  "humidity":"https://auroral.iot.linkeddata.es/def/adapters#RelativeHumidity"
+                  "humidity":"https://auroral.iot.linkeddata.es/def/adapters#RelativeHumidity",
+                  "degreeCelsius" : "http://www.ontology-of-units-of-measure.org/resource/om-2/degreeCelsius"
                }
             }
          }
@@ -46,5 +52,6 @@
    },
    "humiditySensor":"https://auroral.iot.linkeddata.es/def/adapters#HumiditySensor",
    "co2Sensor":"https://auroral.iot.linkeddata.es/def/adapters#co2Sensor",
-   "lightbulb":"https://auroral.iot.linkeddata.es/def/adapters#LightBulb"
+   "lightbulb":"https://auroral.iot.linkeddata.es/def/adapters#LightBulb",
+   "thermometer":"https://auroral.iot.linkeddata.es/def/adapters#Thermometer"
 }
