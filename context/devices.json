@@ -8,11 +8,10 @@
          "@id":"https://saref.etsi.org/saref4bldg/hasSpace",
          "@type":"http://www.w3.org/2001/XMLSchema#string"
       },
-      ,
       "hasId":{
          "@id":"https://saref.etsi.org/saref4bldg/hasSpace",
          "@type":"http://www.w3.org/2001/XMLSchema#string"
-      }
+      },
       "city":{
          "@id":"https://saref.etsi.org/saref4city/City",
          "@type":"http://www.w3.org/2001/XMLSchema#string"
