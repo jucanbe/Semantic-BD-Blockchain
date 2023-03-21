@@ -41,10 +41,10 @@
                   "humidity":"https://auroral.iot.linkeddata.es/def/adapters#RelativeHumidity"
                }
             }
-         },
-         "humiditySensor":"https://auroral.iot.linkeddata.es/def/adapters#HumiditySensor",
-         "co2Sensor":"https://auroral.iot.linkeddata.es/def/adapters#co2Sensor",
-         "lightbulb":"https://auroral.iot.linkeddata.es/def/adapters#LightBulb"
+         }
       }
-   }
+   },
+   "humiditySensor":"https://auroral.iot.linkeddata.es/def/adapters#HumiditySensor",
+   "co2Sensor":"https://auroral.iot.linkeddata.es/def/adapters#co2Sensor",
+   "lightbulb":"https://auroral.iot.linkeddata.es/def/adapters#LightBulb"
 }
