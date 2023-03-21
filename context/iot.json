@@ -1,0 +1,35 @@
+{
+  "@context":{
+    "saref" : "https://saref.etsi.org/core/",
+    "s4ldg":"http://saref.etsi.org/saref4bldg/",
+    "saref4city":"https://saerf.etsi.org/saerf4city/",
+    "location" : {
+        "@id": "saref4city:City",
+        "@type": "xsd:string"
+    },"timestamp" : {
+        "@id": "saref:hasTimestamp",
+        "@type": "xsd:dateTime"
+    },"buildingName" : {
+        "@id": "s4ldg:BuildingSpace",
+        "@type": "xsd:string"
+    },"office" : {
+        "@id": "saref:BuildingSpace",
+        "@type": "xsd:string"
+    },"lux" : {
+        "@id": "saref:Light",
+        "@type": "xsd:double"
+    },"humidity" : {
+        "@id": "saref:Humidity",
+        "@type": "xsd:double"
+    },"temp" : {
+        "@id": "saref:Temperature",
+        "@type": "xsd:double"
+    },"co2" : {
+        "@id": "saref:co2",
+        "@type": "xsd:double"
+    },"identifier" : {
+        "@id": "https://auroral.iot.linkeddata.es/def/core#hasId",
+        "@type": "xsd:string"
+    }
+  }
+}
