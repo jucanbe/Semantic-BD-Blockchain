@@ -36,10 +36,15 @@
                      "@id":"https://saref.etsi.org/core/isMeasuredIn",
                      "@type":"@vocab"
                   },
-                  "lux":"http://www.ontology-of-units-of-measure.org/resource/om-2/lux"
+                  "lux":"http://www.ontology-of-units-of-measure.org/resource/om-2/lux",
+                  "co2":"https://auroral.iot.linkeddata.es/def/adapters#co2",
+                  "humidity":"https://auroral.iot.linkeddata.es/def/adapters#RelativeHumidity"
                }
             }
-         }
+         },
+         "humiditySensor":"https://auroral.iot.linkeddata.es/def/adapters#HumiditySensor",
+         "co2Sensor":"https://auroral.iot.linkeddata.es/def/adapters#co2Sensor",
+         "lightbulb":"https://auroral.iot.linkeddata.es/def/adapters#LightBulb"
       }
    }
 }
